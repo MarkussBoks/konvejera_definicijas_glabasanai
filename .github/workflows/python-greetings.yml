@@ -21,3 +21,24 @@ jobs:
         run: |
           echo Installing all required dependencies...
           pip install -r requirements.txt
+
+  deploy-to-dev:
+    runs-on: self-hosted
+    needs: install-pip-deps
+    steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v4
+
+      - name: Clone python-greetings repo
+        uses: actions/checkout@v4
+        with:
+          repository: mtararujs/python-greetings
+          path: python-greetings
+
+      - name: Stop existing pm2 process (if any)
+        working-directory: python-greetings
+        run: pm2 delete greetings-app-dev || true
+
+      - name: Start python-greetings app on port 7001
+        working-directory: python-greetings
+        run: pm2 start app.py --name greetings-app-dev -- --port 7001

@@ -36,14 +36,15 @@ jobs:
           path: python-greetings
 
       - name: Stop existing app process (optional, mock)
-        run: echo "Skipping pm2 stop - using Start-Process instead"
+        run: echo "Skipping pm2 stop - using Start-Job instead"
 
-      - name: Start python-greetings app on port 7001 without pm2
+      - name: Start python-greetings app on port 7001 (PowerShell Job)
         working-directory: python-greetings
         shell: powershell
         run: |
-          Start-Process python -ArgumentList "app.py", "--port", "7001"
- 
+          Start-Job -ScriptBlock { python app.py --port 7001 }
+          Start-Sleep -Seconds 5
+
   tests-on-dev:
     runs-on: self-hosted
     needs: deploy-to-dev

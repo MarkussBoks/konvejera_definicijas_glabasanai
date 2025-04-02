@@ -35,14 +35,11 @@ jobs:
           repository: mtararujs/python-greetings
           path: python-greetings
 
-      - name: Stop existing pm2 process (if any)
-        working-directory: python-greetings
-        shell: cmd
-        run: |
-         pm2 delete greetings-app-dev || exit 0
+      - name: Stop existing app process (optional, mock)
+        run: echo "Skipping pm2 stop - using Start-Process instead"
 
-      - name: Start python-greetings app on port 7001
+      - name: Start python-greetings app on port 7001 without pm2
         working-directory: python-greetings
-        shell: cmd
+        shell: powershell
         run: |
-         pm2 start app.py --name greetings-app-dev -- --port 7001
+          Start-Process python -ArgumentList "app.py", "--port", "7001"

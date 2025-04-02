@@ -38,8 +38,9 @@ jobs:
       - name: Stop existing pm2 process (if any)
         working-directory: python-greetings
         run: |
-            pm2 delete greetings-app-dev -ErrorAction SilentlyContinue
+          & "C:\Users\marku\AppData\Roaming\npm\pm2.ps1" delete greetings-app-dev -ErrorAction SilentlyContinue
 
       - name: Start python-greetings app on port 7001
         working-directory: python-greetings
-        run: pm2 start app.py --name greetings-app-dev -- --port 7001
+        run: |
+          & "C:\Users\marku\AppData\Roaming\npm\pm2.ps1" start app.py --name greetings-app-dev -- --port 7001
